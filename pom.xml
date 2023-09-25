@@ -9,7 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>topic2_task8</module>
+        <module>mod2_topic2</module>
+        <module>mod2_topic2_task9</module>
     </modules>
 
     <properties>

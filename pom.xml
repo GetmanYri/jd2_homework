@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>mod2_topic2</module>
-        <module>mod2_topic2_task9</module>
     </modules>
 
     <properties>

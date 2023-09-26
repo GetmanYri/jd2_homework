@@ -19,12 +19,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Session_Counter</servlet-name>
-        <servlet-class>getman.homework.task9.SessionCounter</servlet-class>
+        <servlet-name>Request_Counter</servlet-name>
+        <servlet-class>getman.homework.task9.RequestCounter</servlet-class>
 
     </servlet>
     <servlet-mapping>
-        <servlet-name>Session_Counter</servlet-name>
+        <servlet-name>Request_Counter</servlet-name>
         <url-pattern>/task9</url-pattern>
     </servlet-mapping>
 

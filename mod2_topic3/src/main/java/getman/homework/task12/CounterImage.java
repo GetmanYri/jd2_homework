@@ -30,13 +30,13 @@ public class CounterImage extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
-        counter = 0;
-        counter = getCounter();
+
 
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        counter = getCounter();
         counter++;
         setCounter(counter);
         resp.setContentType("image/jpeg");

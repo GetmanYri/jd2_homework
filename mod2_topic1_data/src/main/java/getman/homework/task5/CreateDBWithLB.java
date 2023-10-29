@@ -14,7 +14,9 @@ public class CreateDBWithLB {
     private static int index = 1;
     private static final String sqlUseData = "USE " + nameDataBase;
 
-    private static final String sqlSelectTable1 = "SELECT * FROM " + nameTable1 + ";";
+    private static final String sqlSelectTable1 = "SELECT o.id, o.paydate, o.value, c.receiver " +
+            "FROM "+nameTable2+" AS c, "+nameTable1+" AS o "+
+            "WHERE c.id=o.receiver";
     private static final String sqlInsertReceivers = "INSERT INTO " + nameTable2 +
             " (receiver)" +
             "VALUE (?);";
@@ -63,29 +65,14 @@ public class CreateDBWithLB {
         while (resultExpenses.next()) {
             int id = resultExpenses.getInt(1);
             LocalDate localDate = resultExpenses.getDate(2).toLocalDate();
-            int receiver_id = resultExpenses.getInt(3);
-            String nameReceiver = "";
-            double valueExpense = resultExpenses.getDouble(4);
-            nameReceiver = getNameReceiver(receiver_id, conn);
+            String nameReceiver = resultExpenses.getString(4);
+            double valueExpense = resultExpenses.getDouble(3);
+
             System.out.println(id + "; " + localDate + "; " + nameReceiver + "; " + valueExpense);
         }
         resultExpenses.close();
     }
 
-    public static String getNameReceiver(int id, Connection conn) throws SQLException {
-        String nameReceiver = "";
-        PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectReceiver);
-        preparedStatement.setInt(1, id);
-
-        ResultSet resultReceiver = preparedStatement.executeQuery();
-        while (resultReceiver.next()) {
-            nameReceiver = resultReceiver.getString("receiver");
-        }
-        resultReceiver.close();
-        preparedStatement.close();
-
-        return nameReceiver;
-    }
 
     public static void printTable2(Statement statement) throws SQLException {
         ResultSet resultReceivers = statement.executeQuery("SELECT * FROM Receivers;");

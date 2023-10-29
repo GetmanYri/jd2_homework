@@ -17,14 +17,16 @@ public class CreateDBWithSQL {
             "paydate date," +
             "receiver INT," +
             "value decimal(10,2)," +
-            "PRIMARY KEY (id)," + //+
+            "PRIMARY KEY (id)," +
             "FOREIGN KEY (receiver) REFERENCES " + nameTable2 + " (id));";
     private static final String sqlCreateTableReceivers = "CREATE Table IF NOT EXISTS " + nameTable2 +
             "(id INT NOT NULL AUTO_INCREMENT," +
             "receiver varchar(250)," +
             "PRIMARY KEY (id));";
-    private static final String sqlSelectTable1 = "SELECT * FROM " + nameTable1 + ";";
 
+    private static final String sqlSelectTable1 = "SELECT o.id, o.paydate, o.value, c.receiver " +
+            "FROM " + nameTable2 + " AS c, " + nameTable1 + " AS o " +
+            "WHERE c.id=o.receiver";
 
     public static void createDataBase(Statement statement) throws SQLException {
         statement.executeUpdate(sqlCreateDatabase);
@@ -66,28 +68,14 @@ public class CreateDBWithSQL {
         while (resultExpenses.next()) {
             int id = resultExpenses.getInt(1);
             LocalDate localDate = resultExpenses.getDate(2).toLocalDate();
-            int receiver_id = resultExpenses.getInt(3);
-            String nameReceiver = "";
-            double valueExpense = resultExpenses.getDouble(4);
-            nameReceiver = getNameReceiver(receiver_id, conn);
+            String nameReceiver = resultExpenses.getString(4);
+            double valueExpense = resultExpenses.getDouble(3);
+
             System.out.println(id + "; " + localDate + "; " + nameReceiver + "; " + valueExpense);
         }
         resultExpenses.close();
     }
 
-    public static String getNameReceiver(int id, Connection conn) throws SQLException {
-        String nameReceiver = "";
-        Statement statementReceiver = conn.createStatement();
-
-        ResultSet resultReceiver = statementReceiver.executeQuery("SELECT receiver FROM " + nameTable2 + " WHERE id=" + id + ";");
-        while (resultReceiver.next()) {
-            nameReceiver = resultReceiver.getString("receiver");
-        }
-        resultReceiver.close();
-        statementReceiver.close();
-
-        return nameReceiver;
-    }
 
     public static void printTable2(Statement statement) throws SQLException {
         ResultSet resultReceivers = statement.executeQuery("SELECT * FROM Receivers;");

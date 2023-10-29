@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="getman">
+        <sql>
+            CREATE Table IF NOT EXISTS receivers (
+            id INT NOT NULL AUTO_INCREMENT,
+            receiver varchar(250),
+            PRIMARY KEY (id));
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="getman">
+        <sql>
+            CREATE Table IF NOT EXISTS expenses (
+            id INT NOT NULL AUTO_INCREMENT,
+            paydate date,
+            receiver INT,
+            value decimal(10,2),
+            PRIMARY KEY (id),
+            FOREIGN KEY (receiver) REFERENCES receivers (id));
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

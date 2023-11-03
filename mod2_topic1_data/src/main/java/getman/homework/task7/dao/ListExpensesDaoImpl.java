@@ -11,6 +11,11 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
 
     private final String nameTable2 = "receivers_task7";
     private final String nameTable1 = "expenses_task7";
+    private final Connection conn;
+
+    public ListExpensesDaoImpl(Connection connection) {
+        this.conn = connection;
+    }
 
     @Override
     public long addReceiver(Receiver receiver) {
@@ -21,7 +26,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
                 " (receiver)" +
                 "VALUE ('" + nameReceiver + "');";
 
-        try (Connection conn = DataSource.getConnection(); Statement statement = conn.createStatement()) {
+        try (Statement statement = conn.createStatement()) {
             ResultSet resultReceivers = statement.executeQuery("SELECT * FROM " + nameTable2 + ";");
             while (resultReceivers.next()) {
                 if (resultReceivers.getString(2).equalsIgnoreCase(nameReceiver)) {
@@ -36,7 +41,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
                 resultReceivers.close();
             }
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return idReceiver;
@@ -57,9 +62,9 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
                 " (paydate,value)" +
                 "VALUES ('" + paydate + "'," + value + ");";
 */
-        try (Connection conn = DataSource.getConnection(); Statement statement = conn.createStatement()) {
+        try ( Statement statement = conn.createStatement()) {
             statement.executeUpdate(sqlInsertExpenses);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -69,7 +74,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         ArrayList<Expense>expenses = new ArrayList<Expense>();
         String sqlSelectExpenses="select * from "+nameTable1;
 
-        try (Connection conn = DataSource.getConnection(); Statement statement = conn.createStatement()) {
+        try (Statement statement = conn.createStatement()) {
         ResultSet resultSet=statement.executeQuery(sqlSelectExpenses);
         while(resultSet.next()) {
             long id = resultSet.getLong(1);
@@ -79,7 +84,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
             expenses.add(new Expense(id, payDate, receiverId,value));
         }
         resultSet.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return expenses;
@@ -89,7 +94,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
     public Expense getExpense(long id) {
         String sqlSelectExpense="select * from "+nameTable1+" where id="+id;
         Expense expense;
-        try (Connection conn = DataSource.getConnection(); Statement statement = conn.createStatement()) {
+        try (Statement statement = conn.createStatement()) {
             ResultSet resultSet=statement.executeQuery(sqlSelectExpense);
             resultSet.next();
                 long idExpense = resultSet.getLong(1);
@@ -99,7 +104,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
                 expense=new Expense(idExpense, payDate, receiverId,value);
                 resultSet.close();
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return expense;
@@ -110,7 +115,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         ArrayList<Receiver>receivers = new ArrayList<Receiver>();
         String sqlSelectReceivers="select * from "+nameTable2;
 
-        try (Connection conn = DataSource.getConnection(); Statement statement = conn.createStatement()) {
+        try (Statement statement = conn.createStatement()) {
             ResultSet resultSet=statement.executeQuery(sqlSelectReceivers);
             while(resultSet.next()) {
                 long id = resultSet.getLong(1);
@@ -118,7 +123,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
                 receivers.add(new Receiver(id,nameReceiver));
             }
             resultSet.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return receivers;
@@ -128,7 +133,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
     public Receiver getReceiver(long id) {
         String sqlSelectReceiver="select * from "+nameTable2+" where id="+id;
         Receiver receiver;
-        try (Connection conn = DataSource.getConnection(); Statement statement = conn.createStatement()) {
+        try (Statement statement = conn.createStatement()) {
             ResultSet resultSet=statement.executeQuery(sqlSelectReceiver);
             resultSet.next();
             long idReceiver = resultSet.getLong(1);
@@ -137,17 +142,17 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
             receiver=new Receiver(idReceiver,nameReceiver);
             resultSet.close();
 
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return receiver;
     }
 
-    public static void main(String[] args) {
-        ListExpensesDao listExpensesDao = new ListExpensesDaoImpl();
-        Receiver receiver = new Receiver(0,"Mile");
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        ListExpensesDao listExpensesDao = new ListExpensesDaoImpl(DataSource.getConnection());
+        Receiver receiver = new Receiver(0,"Bigz");
         receiver.setId(1);
-        Expense expense = new Expense(1,"2023.11.12", receiver.getId(), 1147.56);
+        Expense expense = new Expense(1,"2023.12.31", receiver.getId(), 1148757.56);
         expense.setReceiver(receiver);
         //listExpensesDao.addReceiver(receiver);
         listExpensesDao.addExpense(expense);
@@ -158,7 +163,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         }
         System.out.println("__________________");
 
-        System.out.println(listExpensesDao.getExpense(4));
+        System.out.println(listExpensesDao.getExpense(1));
         System.out.println("__________________");
 
         ArrayList<Receiver>receivers=listExpensesDao.getReceivers();
@@ -168,7 +173,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
 
         System.out.println("__________________");
 
-        System.out.println(listExpensesDao.getReceiver(4));
+        System.out.println(listExpensesDao.getReceiver(1));
     }
 
 

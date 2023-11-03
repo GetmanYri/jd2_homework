@@ -23,7 +23,14 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
@@ -34,7 +41,6 @@
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                     <driver>com.mysql.cj.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/ListExpensesCreateLB?createDatabaseIfNotExist=true</url>
                     <username>user</username>
                     <password>user</password>
                 </configuration>
@@ -47,6 +53,18 @@
                         </goals>
                         <configuration>
                             <changeLogFile>src/main/resources/changelog-master.xml</changeLogFile>
+                            <url>jdbc:mysql://localhost:3306/ListExpensesCreateLB?createDatabaseIfNotExist=true</url>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>update_test</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                        <configuration>
+                            <changeLogFile>src/main/resources/changelog-master.xml</changeLogFile>
+                            <url>jdbc:mysql://localhost:3306/ListExpensesCreateLB_test?createDatabaseIfNotExist=true</url>
                         </configuration>
                     </execution>
                 </executions>

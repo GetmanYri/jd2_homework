@@ -1,6 +1,5 @@
 package getman.homework.task7.dao;
 
-import getman.homework.task5.data.DataSource;
 import getman.homework.task7.model.Expense;
 import getman.homework.task7.model.Receiver;
 
@@ -148,7 +147,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         return receiver;
     }
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+   /* public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ListExpensesDao listExpensesDao = new ListExpensesDaoImpl(DataSource.getConnection());
         Receiver receiver = new Receiver(0,"Bigz");
         receiver.setId(1);
@@ -174,7 +173,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         System.out.println("__________________");
 
         System.out.println(listExpensesDao.getReceiver(1));
-    }
+    }*/
 
 
 }

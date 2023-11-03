@@ -1,4 +1,4 @@
-package getman.homework.task5;
+package getman.homework.task5.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

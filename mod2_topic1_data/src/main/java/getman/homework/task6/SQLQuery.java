@@ -1,6 +1,6 @@
 package getman.homework.task6;
 
-import getman.homework.task5.DataSource;
+import getman.homework.task5.data.DataSource;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

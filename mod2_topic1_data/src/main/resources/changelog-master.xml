@@ -26,4 +26,25 @@
         </sql>
     </changeSet>
 
+    <changeSet id="3" author="getman">
+        <sql>
+            CREATE Table IF NOT EXISTS receivers_task7 (
+            id INT NOT NULL AUTO_INCREMENT,
+            receiver varchar(250),
+            PRIMARY KEY (id));
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="getman">
+        <sql>
+            CREATE Table IF NOT EXISTS expenses_task7 (
+            id INT NOT NULL AUTO_INCREMENT,
+            paydate varchar(100),
+            receiver INT,
+            value decimal(10,2),
+            PRIMARY KEY (id),
+            FOREIGN KEY (receiver) REFERENCES receivers_task7 (id));
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

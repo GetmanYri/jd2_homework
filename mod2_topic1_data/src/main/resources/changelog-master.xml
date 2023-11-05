@@ -22,7 +22,7 @@
             receiver INT,
             value decimal(10,2),
             PRIMARY KEY (id),
-            FOREIGN KEY (receiver) REFERENCES receivers (id));
+            FOREIGN KEY (receiver) REFERENCES receivers (id) ON DELETE CASCADE);
         </sql>
     </changeSet>
 
@@ -43,7 +43,7 @@
             receiver INT,
             value decimal(10,2),
             PRIMARY KEY (id),
-            FOREIGN KEY (receiver) REFERENCES receivers_task7 (id));
+            FOREIGN KEY (receiver) REFERENCES receivers_task7 (id) ON DELETE CASCADE);
         </sql>
     </changeSet>
 

@@ -1,5 +1,6 @@
 package getman.homework.task7.dao;
 
+import getman.homework.task5.data.DataSource;
 import getman.homework.task7.model.Expense;
 import getman.homework.task7.model.Receiver;
 
@@ -57,10 +58,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         String sqlInsertExpenses = "INSERT INTO " + nameTable1 +
                 " (paydate,receiver,value)" +
                 "VALUES ('" + paydate + "'," + receiverId + "," + value + ");";
-        /*String sqlInsertExpenses2 = "INSERT INTO " + nameTable1 +
-                " (paydate,value)" +
-                "VALUES ('" + paydate + "'," + value + ");";
-*/
+
         try ( Statement statement = conn.createStatement()) {
             statement.executeUpdate(sqlInsertExpenses);
         } catch (SQLException e) {
@@ -149,15 +147,14 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
 
    /* public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ListExpensesDao listExpensesDao = new ListExpensesDaoImpl(DataSource.getConnection());
-        Receiver receiver = new Receiver(0,"Bigz");
-        receiver.setId(1);
-        Expense expense = new Expense(1,"2023.12.31", receiver.getId(), 1148757.56);
+        Receiver receiver = new Receiver(1,"Prostore");
+        Expense expense = new Expense(1,"2023.12.29", receiver.getId(), 1541.56);
         expense.setReceiver(receiver);
-        //listExpensesDao.addReceiver(receiver);
         listExpensesDao.addExpense(expense);
 
         ArrayList<Expense>expenses=listExpensesDao.getExpenses();
         for(Expense ex:expenses){
+            ex.setReceiver(listExpensesDao.getReceiver(ex.getReceiverId()));
             System.out.println(ex.toString());
         }
         System.out.println("__________________");
@@ -173,7 +170,7 @@ public class ListExpensesDaoImpl implements ListExpensesDao {
         System.out.println("__________________");
 
         System.out.println(listExpensesDao.getReceiver(1));
-    }*/
-
+    }
+*/
 
 }

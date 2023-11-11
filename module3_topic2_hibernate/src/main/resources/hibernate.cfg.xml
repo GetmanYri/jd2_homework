@@ -10,6 +10,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="getman.homework.data.pojo.Person"/>
+        <mapping class="getman.homework.data.pojo.BankAccount"/>
 
 
     </session-factory>

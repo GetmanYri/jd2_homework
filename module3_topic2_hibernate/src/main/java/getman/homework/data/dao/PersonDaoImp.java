@@ -1,5 +1,6 @@
 package getman.homework.data.dao;
 
+import getman.homework.data.pojo.BankAccount;
 import getman.homework.data.pojo.Person;
 import getman.homework.data.util.HibernateSessionFactory;
 import org.hibernate.ReplicationMode;
@@ -17,7 +18,7 @@ public class PersonDaoImp implements PersonDao {
     }
 
     @Override
-    public String savePerson(Person person) {
+    public String save(Person person) {
         Session session = null;
         Transaction transaction = null;
         String saveId = null;
@@ -25,6 +26,24 @@ public class PersonDaoImp implements PersonDao {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             saveId = (String) session.save(person);
+            //session.saveOrUpdate(person);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session != null) session.close();
+        }
+        return saveId;
+    }
+    public String save(BankAccount bankAccount) {
+        Session session = null;
+        Transaction transaction = null;
+        String saveId = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            saveId = (String) session.save(bankAccount);
             //session.saveOrUpdate(person);
             transaction.commit();
         } catch (Exception e) {
@@ -49,8 +68,7 @@ public class PersonDaoImp implements PersonDao {
             if (person == null) {
                 return false;
             }
-
-            session.delete(person);
+            session.remove(person);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -81,6 +99,7 @@ public class PersonDaoImp implements PersonDao {
         }
         return person;
     }
+
     public Person loadPersonById(String id) {
         Session session = null;
         Transaction transaction = null;
@@ -91,7 +110,7 @@ public class PersonDaoImp implements PersonDao {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             person = session.load(Person.class, id);
-
+            session.refresh(person);
             //session.saveOrUpdate(person);
             transaction.commit();
         } catch (Exception e) {
@@ -111,7 +130,7 @@ public class PersonDaoImp implements PersonDao {
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.replicate(person, ReplicationMode.EXCEPTION);
+            session.replicate(person, ReplicationMode.IGNORE);
 
             transaction.commit();
         } catch (Exception e) {

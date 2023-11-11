@@ -27,9 +27,14 @@ public class PersonDaoImpTest {
 
     @After
     public void tearDown() throws Exception {
+
         personDao=null;
         Connection connection = DataSource.getConnection();
-        connection.createStatement().execute("Truncate table person");
+        connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0;");
+        connection.createStatement().execute("truncate table bankaccount");
+
+        connection.createStatement().execute("truncate table person");
+        connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 1;");
         connection.close();
     }
 
@@ -39,7 +44,7 @@ public class PersonDaoImpTest {
         Person readPerson = null;
         int count;
 
-        personDao.savePerson(savePerson);
+        personDao.save(savePerson);
         Connection connection = DataSource.getConnection();
         ResultSet resultSet = connection.createStatement().executeQuery(" SELECT * from person");
         while (resultSet.next()) {

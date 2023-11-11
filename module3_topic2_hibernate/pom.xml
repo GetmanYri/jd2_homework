@@ -56,7 +56,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        getman.homework.data.MainHibernate
+                                        getman.homework.data.DBOperationMain
                                     </mainClass>
                                 </manifest>
                             </archive>

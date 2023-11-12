@@ -1,4 +1,4 @@
-package getman.homework.data;
+package getman.homework.data.task2;
 
 import getman.homework.data.dao.PersonDao;
 import getman.homework.data.dao.PersonDaoImp;

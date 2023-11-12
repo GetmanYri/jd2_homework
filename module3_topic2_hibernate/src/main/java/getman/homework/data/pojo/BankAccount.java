@@ -3,9 +3,10 @@ package getman.homework.data.pojo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class BankAccount {
+public class BankAccount implements Serializable {
 
     @Id
     @GenericGenerator(strategy = "uuid", name = "account_uuid")
@@ -50,4 +51,11 @@ public class BankAccount {
         this.person = person;
     }
 
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "id='" + id + '\'' +
+                ", accountNumber=" + accountNumber +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package getman.homework.data.dao;
 
+import getman.homework.data.pojo.BankAccount;
 import getman.homework.data.util.HibernateTestSessionFactory;
 import getman.homework.data.pojo.Person;
 import getman.homework.data.util.DataSource;
@@ -28,7 +29,7 @@ public class PersonDaoImpTest {
     @After
     public void tearDown() throws Exception {
 
-        personDao=null;
+        personDao = null;
         Connection connection = DataSource.getConnection();
         connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0;");
         connection.createStatement().execute("truncate table bankaccount");
@@ -45,6 +46,7 @@ public class PersonDaoImpTest {
         int count;
 
         personDao.save(savePerson);
+
         Connection connection = DataSource.getConnection();
         ResultSet resultSet = connection.createStatement().executeQuery(" SELECT * from person");
         while (resultSet.next()) {
@@ -59,11 +61,39 @@ public class PersonDaoImpTest {
         resultSet.next();
         count = resultSet.getInt(1);
         resultSet.close();
+
         assertEquals(count, 1);
         assertNotNull(readPerson);
         assertEquals(23, (long) readPerson.getAge());
         assertEquals("John", readPerson.getName());
         assertEquals("Smith", readPerson.getSurname());
+        connection.close();
+    }
+
+    @Test
+    public void saveBankAccount() throws Exception {
+        BankAccount bankAccount = new BankAccount(null, 1234);
+        BankAccount readBankAccount = null;
+        int count;
+
+        personDao.save(bankAccount);
+
+        Connection connection = DataSource.getConnection();
+        ResultSet resultSet = connection.createStatement().executeQuery(" SELECT * from bankAccount");
+        while (resultSet.next()) {
+            long account = resultSet.getLong(2);
+            readBankAccount = new BankAccount(null,account);
+        }
+        resultSet.close();
+
+        resultSet = connection.createStatement().executeQuery("Select count(*) from bankAccount");
+        resultSet.next();
+        count = resultSet.getInt(1);
+        resultSet.close();
+
+        assertEquals(count, 1);
+        assertNotNull(readBankAccount);
+        assertEquals(1234, readBankAccount.getAccountNumber());
         connection.close();
     }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="getman">
+        <sql>
+            CREATE TABLE `bankaccount` (
+            `ACCOUNT_ID` varchar(255) NOT NULL,
+            `ACCOUNT_NUM` bigint DEFAULT NULL,
+            `PERSON_ID` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`ACCOUNT_ID`));
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="2" author="getman">
+        <sql>
+            CREATE TABLE `person` (
+            `PERSON_ID` varchar(255) NOT NULL,
+            `AGE` int DEFAULT NULL,
+            `NAME` varchar(255) DEFAULT NULL,
+            `SURNAME` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`PERSON_ID`));
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="3" author="getman">
+        <sql>
+            CREATE Table IF NOT EXISTS log (
+            id INT NOT NULL AUTO_INCREMENT,
+            action varchar(25),
+            time_action TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            person_id varchar(255),
+            PRIMARY KEY (id));
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="getman">
+        <sql>
+            CREATE TRIGGER `log_person` AFTER INSERT ON `person`
+            FOR EACH ROW BEGIN
+            INSERT INTO log Set action = 'INSERT', person_id = NEW.PERSON_ID;
+            END;
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>

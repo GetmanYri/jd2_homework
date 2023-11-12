@@ -10,6 +10,8 @@ public interface PersonDao {
     boolean deletePerson(String id);
     Person getPersonById(String id);
     Person loadPersonById(String id);
-    void savePersonById(Person person);
+    void savePersonWithId(Person person);
+    void saveBankAccountWithId(BankAccount bankAccount);
+    void saveFlushManual(Person person);
 
 }

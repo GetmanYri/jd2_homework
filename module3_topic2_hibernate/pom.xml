@@ -41,6 +41,7 @@
         </dependency>
 
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -56,7 +57,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        getman.homework.data.DBOperationMain
+                                        getman.homework.data.task2.DBOperationMain
                                     </mainClass>
                                 </manifest>
                             </archive>
@@ -66,6 +67,30 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.23.0</version>
+            <configuration>
+                <driver>com.mysql.cj.jdbc.Driver</driver>
+                <username>user</username>
+                <password>user</password>
+            </configuration>
+            <executions>
+            <execution>
+                <id>update</id>
+                <phase>process-resources</phase>
+                <goals>
+                    <goal>update</goal>
+                </goals>
+                <configuration>
+                    <changeLogFile>src/main/resources/changelog-master.xml</changeLogFile>
+                    <url>jdbc:mysql://localhost:3306/hibernateNADB?createDatabaseIfNotExist=true</url>
+                </configuration>
+            </execution>
+            </executions>
             </plugin>
 
         </plugins>

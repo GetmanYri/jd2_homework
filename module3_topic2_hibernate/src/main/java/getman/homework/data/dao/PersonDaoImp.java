@@ -3,10 +3,7 @@ package getman.homework.data.dao;
 import getman.homework.data.pojo.BankAccount;
 import getman.homework.data.pojo.Person;
 import getman.homework.data.util.HibernateSessionFactory;
-import org.hibernate.ReplicationMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.id.uuid.StandardRandomStrategy;
 
 public class PersonDaoImp implements PersonDao {
@@ -36,6 +33,7 @@ public class PersonDaoImp implements PersonDao {
         }
         return saveId;
     }
+
     public String save(BankAccount bankAccount) {
         Session session = null;
         Transaction transaction = null;
@@ -123,7 +121,7 @@ public class PersonDaoImp implements PersonDao {
     }
 
     @Override
-    public void savePersonById(Person person) {
+    public void savePersonWithId(Person person) {
         Session session = null;
         Transaction transaction = null;
         String saveId = null;
@@ -133,6 +131,48 @@ public class PersonDaoImp implements PersonDao {
             session.replicate(person, ReplicationMode.IGNORE);
 
             transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    @Override
+    public void saveBankAccountWithId(BankAccount bankAccount) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.replicate(bankAccount, ReplicationMode.IGNORE);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session != null) session.close();
+        }
+    }
+
+    public void saveFlushManual(Person person) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+
+            session = sessionFactory.openSession();
+            session.setHibernateFlushMode(FlushMode.MANUAL);
+
+            transaction = session.beginTransaction();
+            session.save(person);
+            session.flush(); //insert into PERSON (AGE, NAME, SURNAME, PERSON_ID) values (?, ?, ?, ?)
+            person.setAge(13);
+            session.flush();//update PERSON set AGE=?, NAME=?, SURNAME=? where PERSON_ID=?
+            session.clear();
+
+
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             throw new RuntimeException(e);

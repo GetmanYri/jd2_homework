@@ -48,5 +48,10 @@
         </sql>
     </changeSet>
 
+    <changeSet id="5" author="getman">
+        <sql>
+            ALTER TABLE person ADD COLUMN ACCESS_LEVEL INT NULL AFTER SURNAME;
+        </sql>
+    </changeSet>
 
-</databaseChangeLog>
+  </databaseChangeLog>

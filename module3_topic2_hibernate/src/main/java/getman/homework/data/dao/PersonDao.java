@@ -9,9 +9,14 @@ public interface PersonDao {
     String save(BankAccount bankAccount);
     boolean deletePerson(String id);
     Person getPersonById(String id);
+    Person getPersonWithBankAccountById(String id);
     Person loadPersonById(String id);
+
     void savePersonWithId(Person person);
     void saveBankAccountWithId(BankAccount bankAccount);
+    Person refreshPerson(Person person);
     void saveFlushManual(Person person);
+
+
 
 }

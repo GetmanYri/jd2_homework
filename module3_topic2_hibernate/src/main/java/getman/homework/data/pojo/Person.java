@@ -21,8 +21,10 @@ public class Person implements Serializable {
     private String name;
     @Column(name = "SURNAME")
     private String surname;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person",cascade = CascadeType.ALL)
     private List<BankAccount> bankAccounts=new ArrayList<>();
+    @Column(name = "ACCESS_LEVEL")
+    private Integer accessLevel;
 
     public Person() {
     }
@@ -72,6 +74,10 @@ public class Person implements Serializable {
 
     public void setBankAccounts(List<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
+    }
+
+    public Integer getAccessLevel() {
+        return accessLevel;
     }
 
     @Override

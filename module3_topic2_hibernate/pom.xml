@@ -90,6 +90,17 @@
                     <url>jdbc:mysql://localhost:3306/hibernateNADB?createDatabaseIfNotExist=true</url>
                 </configuration>
             </execution>
+                <execution>
+                    <id>update_test</id>
+                    <phase>process-resources</phase>
+                    <goals>
+                        <goal>update</goal>
+                    </goals>
+                    <configuration>
+                        <changeLogFile>src/main/resources/changelog-master.xml</changeLogFile>
+                        <url>jdbc:mysql://localhost:3306/hibernateNADB_test?createDatabaseIfNotExist=true</url>
+                    </configuration>
+                </execution>
             </executions>
             </plugin>
 

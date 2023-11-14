@@ -10,26 +10,11 @@ import getman.homework.data.util.Scanner;
 public class DBOperationMain {
     private final static PersonDao personDao = new PersonDaoImp(HibernateSessionFactory.getSessionFactory());
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         while (true) {
             action(choosingAction());
 
         }
-        /*Person person;
-        BankAccount bankAccount;
-        System.out.println("Enter");
-        person = setPerson();
-        bankAccount = setBankAccount();
-
-
-        //Person person=new Person("464",45,"Дмитрий","Егоров");
-        // BankAccount bankAccount = new BankAccount("84", 4468);
-        //person.getBankAccounts().add(bankAccount);
-        // bankAccount.setPerson(person);
-        System.out.println(personDao.savePerson(person));
-        personDao.savePerson(bankAccount);
-        // System.out.println(personDao.savePerson(bankAccount));*/
-
     }
 
     private static Person setPerson() {
@@ -52,12 +37,8 @@ public class DBOperationMain {
     }
 
     private static BankAccount setBankAccount() {
-        /*if (person == null) {
-            System.out.println("person is null");
-            System.exit(2);
-        }*/
+
         BankAccount bankAccount = new BankAccount();
-        //bankAccount.setPerson(person);
         try {
             System.out.println("Enter the bank account");
             System.out.println("(Skip - enter 1;)");
@@ -112,7 +93,7 @@ public class DBOperationMain {
     private static String find() {
         Person person;
         String id = readId();
-        person = personDao.getPersonById(id);
+        person = personDao.getPersonWithBankAccountById(id);
 
         if (person == null) {
             return "Person with id " + id + " not found";
@@ -121,7 +102,6 @@ public class DBOperationMain {
     }
 
     private static String deleteById() {
-        //Person person;
         boolean found;
         String id = readId();
         found = personDao.deletePerson(id);

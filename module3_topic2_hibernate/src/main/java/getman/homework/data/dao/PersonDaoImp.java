@@ -2,9 +2,7 @@ package getman.homework.data.dao;
 
 import getman.homework.data.pojo.BankAccount;
 import getman.homework.data.pojo.Person;
-import getman.homework.data.util.HibernateSessionFactory;
 import org.hibernate.*;
-import org.hibernate.id.uuid.StandardRandomStrategy;
 
 public class PersonDaoImp implements PersonDao {
     SessionFactory sessionFactory;
@@ -23,7 +21,6 @@ public class PersonDaoImp implements PersonDao {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             saveId = (String) session.save(person);
-            //session.saveOrUpdate(person);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -42,7 +39,6 @@ public class PersonDaoImp implements PersonDao {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             saveId = (String) session.save(bankAccount);
-            //session.saveOrUpdate(person);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -87,7 +83,27 @@ public class PersonDaoImp implements PersonDao {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             person = session.get(Person.class, id);
-            //session.saveOrUpdate(person);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session != null) session.close();
+        }
+        return person;
+    }
+
+    @Override
+    public Person getPersonWithBankAccountById(String id) {
+        Session session = null;
+        Transaction transaction = null;
+        Person person;
+
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            person = session.get(Person.class, id);
+            session.refresh(person);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -103,13 +119,10 @@ public class PersonDaoImp implements PersonDao {
         Transaction transaction = null;
         Person person;
 
-
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             person = session.load(Person.class, id);
-            session.refresh(person);
-            //session.saveOrUpdate(person);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
@@ -120,15 +133,15 @@ public class PersonDaoImp implements PersonDao {
         return person;
     }
 
+
     @Override
     public void savePersonWithId(Person person) {
         Session session = null;
         Transaction transaction = null;
-        String saveId = null;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.replicate(person, ReplicationMode.IGNORE);
+            session.replicate(person, ReplicationMode.OVERWRITE);
 
             transaction.commit();
         } catch (Exception e) {
@@ -157,6 +170,26 @@ public class PersonDaoImp implements PersonDao {
         }
     }
 
+    @Override
+    public Person refreshPerson(Person person) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.refresh(person);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            if (session != null) session.close();
+        }
+        return person;
+    }
+
+
     public void saveFlushManual(Person person) {
         Session session = null;
         Transaction transaction = null;
@@ -168,7 +201,7 @@ public class PersonDaoImp implements PersonDao {
             transaction = session.beginTransaction();
             session.save(person);
             session.flush(); //insert into PERSON (AGE, NAME, SURNAME, PERSON_ID) values (?, ?, ?, ?)
-            person.setAge(13);
+            person.setName("John");
             session.flush();//update PERSON set AGE=?, NAME=?, SURNAME=? where PERSON_ID=?
             session.clear();
 
@@ -181,4 +214,5 @@ public class PersonDaoImp implements PersonDao {
         }
     }
 }
+
 

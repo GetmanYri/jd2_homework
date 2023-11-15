@@ -16,7 +16,7 @@ public class PersonDaoImp implements PersonDao {
     public String save(Person person) {
         Session session = null;
         Transaction transaction = null;
-        String saveId = null;
+        String saveId;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
@@ -34,7 +34,7 @@ public class PersonDaoImp implements PersonDao {
     public String save(BankAccount bankAccount) {
         Session session = null;
         Transaction transaction = null;
-        String saveId = null;
+        String saveId;
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();

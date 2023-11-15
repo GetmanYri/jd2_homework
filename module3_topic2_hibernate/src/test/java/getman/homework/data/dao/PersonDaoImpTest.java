@@ -22,14 +22,10 @@ public class PersonDaoImpTest {
     public void setUp() throws Exception {
         personDao = new PersonDaoImp(HibernateTestSessionFactory.getSessionFactory());
         connection = DataSource.getConnection();
-        /*Connection connection = DataSource.getConnection();
-        connection.createStatement().execute("Truncate table person");
-        connection.close();*/
     }
 
     @After
     public void tearDown() throws Exception {
-
         personDao = null;
         connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0;");
         connection.createStatement().execute("truncate table bankaccount");
@@ -45,7 +41,7 @@ public class PersonDaoImpTest {
         Person savePerson = new Person(null, 23, "John", "testSavePerson");
         Person readPerson = null;
         int count;
-        String savedId = null;
+        String savedId;
 
         savedId = personDao.save(savePerson);
 
@@ -76,7 +72,7 @@ public class PersonDaoImpTest {
         BankAccount bankAccount = new BankAccount(null, 1234);
         BankAccount readBankAccount = null;
         int count;
-        String savedId = null;
+        String savedId;
 
         savedId = personDao.save(bankAccount);
 
@@ -96,6 +92,26 @@ public class PersonDaoImpTest {
         assertEquals(count, 1);
         assertNotNull(readBankAccount);
         assertEquals(1234, readBankAccount.getAccountNumber());
+    }
+
+    @Test
+    public void testSavePersonWithBankAccount() throws Exception {
+        BankAccount bankAccount = new BankAccount(null, 1234);
+        String savedIdBankAccount;
+        Person savePerson = new Person(null, 23, "John", "testSavePersonWithBankAccount");
+        String savedIdPerson;
+
+        bankAccount.setPerson(savePerson);
+        savedIdPerson = personDao.save(savePerson);
+        savedIdBankAccount = personDao.save(bankAccount);
+
+        ResultSet resultSet = connection.createStatement().executeQuery(
+                "SELECT PERSON_ID FROM `bankaccount` WHERE ACCOUNT_ID ='" + savedIdBankAccount + "';"
+        );
+
+        resultSet.next();
+        assertEquals(savedIdPerson, resultSet.getString(1));
+        resultSet.close();
     }
 
     @Test
@@ -271,7 +287,6 @@ public class PersonDaoImpTest {
                             "you need to open a session and apply session.refresh(object) method. Exception: " +
                             e.getMessage()
             );
-
         }
     }
 
@@ -379,24 +394,17 @@ public class PersonDaoImpTest {
         assertEquals(count, 1);
         assertNotNull(readBankAccount);
         assertEquals(id, readBankAccount.getId());
-        assertEquals(1234, (long) readBankAccount.getAccountNumber());
+        assertEquals(1234, readBankAccount.getAccountNumber());
     }
 
     @Test
     public void refreshPerson() throws Exception {
+
+        // The trigger is created in a liquibase changelog-master.xml file.
+
         String id = UUID.randomUUID().toString();
         int count;
         Person person = new Person(id, null, null, null);
-        connection.createStatement().executeUpdate(
-                "CREATE TRIGGER `access_level_trigger` BEFORE INSERT ON `person`\n" +
-                        "            FOR EACH ROW BEGIN\n" +
-                        "            IF NEW.AGE < 18 THEN\n" +
-                        "            SET NEW.ACCESS_LEVEL = 1;\n" +
-                        "            ELSEIF NEW.AGE > 18 THEN\n" +
-                        "            SET NEW.ACCESS_LEVEL = 2;\n" +
-                        "            END IF;\n" +
-                        "            END;"
-        );
 
         connection.createStatement().executeUpdate(
                 "INSERT INTO `hibernateNADB_test`.`person`\n" +
@@ -426,9 +434,6 @@ public class PersonDaoImpTest {
         assertEquals("refreshPerson", person.getSurname());
         assertEquals(2, (long) person.getAccessLevel());
 
-        connection.createStatement().executeUpdate(
-                "DROP TRIGGER `access_level_trigger`;"
-        );
     }
 
 
@@ -470,7 +475,7 @@ public class PersonDaoImpTest {
         Person readPerson = null;
         int saveCount;
         int deleteCount;
-        String savedId = null;
+        String savedId;
 
         savedId = personDao.save(savePerson);
 
@@ -504,6 +509,4 @@ public class PersonDaoImpTest {
         assertEquals("John", readPerson.getName());
         assertEquals("saveAndDeletePerson", readPerson.getSurname());
     }
-
-
 }

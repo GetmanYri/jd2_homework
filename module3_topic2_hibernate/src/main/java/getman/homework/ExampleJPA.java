@@ -13,7 +13,6 @@ public class ExampleJPA {
     public static void savePersonJPA(Person person){
         EntityTransaction eTransaction;
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("getman.homework");
-        //EntityManagerFactory emf = Persistence.createEntityManagerFactory("");
 
         EntityManager entityManager = emf.createEntityManager();
 

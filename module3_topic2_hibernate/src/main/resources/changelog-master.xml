@@ -54,4 +54,20 @@
         </sql>
     </changeSet>
 
-  </databaseChangeLog>
+    <changeSet id="6" author="getman">
+<sql endDelimiter="/">
+
+    CREATE TRIGGER `access_level_trigger` BEFORE INSERT ON `person`
+    FOR EACH ROW BEGIN
+    IF NEW.AGE &lt; 18 THEN
+    SET NEW.ACCESS_LEVEL = 1;
+    ELSEIF NEW.AGE > 18 THEN
+    SET NEW.ACCESS_LEVEL = 2;
+    END IF;
+    END;
+    /
+
+</sql>
+
+    </changeSet>
+</databaseChangeLog>

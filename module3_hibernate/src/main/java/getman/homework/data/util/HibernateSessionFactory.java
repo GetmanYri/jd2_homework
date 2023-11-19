@@ -1,0 +1,24 @@
+package getman.homework.data.util;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import java.io.File;
+
+public class HibernateSessionFactory {
+    private static SessionFactory sessionFactory;
+
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                File file = new File("C:\\YRI\\jd2_homework\\jd2_homework\\module3_hibernate\\src\\main\\resources\\hibernate.cfg.xml");
+
+                Configuration conf = new Configuration().configure(file);
+                sessionFactory = conf.buildSessionFactory();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return sessionFactory;
+    }
+}

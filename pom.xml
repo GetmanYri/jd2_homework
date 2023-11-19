@@ -12,7 +12,7 @@
         <module>mod2_topic2</module>
         <module>mod2_topic3</module>
         <module>mod2_topic1_data</module>
-        <module>module3_topic2_hibernate</module>
+        <module>module3_hibernate</module>
     </modules>
 
     <properties>

@@ -1,8 +1,7 @@
 package getman.homework.data.dao.DaoForTask2_3;
 
-import getman.homework.data.dao.DaoForTask2_3.PersonDao;
-import getman.homework.data.dao.DaoForTask2_3.PersonDaoImp;
 import getman.homework.data.pojo.forTask2_3.BankAccount;
+import getman.homework.data.pojo.forTask7.Address;
 import getman.homework.data.util.HibernateTestSessionFactory;
 import getman.homework.data.pojo.forTask2_3.Person;
 import getman.homework.data.util.DataTestSource;
@@ -24,16 +23,21 @@ public class PersonDaoImpTest {
     public void setUp() throws Exception {
         personDao = new PersonDaoImp(HibernateTestSessionFactory.getSessionFactory());
         connection = DataTestSource.getConnection();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        personDao = null;
         connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0;");
         connection.createStatement().execute("truncate table bankaccount");
 
         connection.createStatement().execute("truncate table person");
         connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 1;");
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        personDao = null;
+        /*connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 0;");
+        connection.createStatement().execute("truncate table bankaccount");
+
+        connection.createStatement().execute("truncate table person");
+        connection.createStatement().execute("SET FOREIGN_KEY_CHECKS = 1;");*/
         connection.close();
     }
 
@@ -510,5 +514,47 @@ public class PersonDaoImpTest {
         assertEquals(23, (long) readPerson.getAge());
         assertEquals("John", readPerson.getName());
         assertEquals("saveAndDeletePerson", readPerson.getSurname());
+    }
+
+    @Test
+    public void testSavePersonWithAddress() throws Exception {
+
+        Person savePerson = new Person(null, 23, "John", "testSavePerson");
+        savePerson.setAddress(new Address("Minsk","Belarus","testSavePersonWithAddress"));
+        Person readPerson = null;
+        Address readAddress = null;
+        int count;
+        String savedId;
+
+        savedId = personDao.save(savePerson);
+
+        ResultSet resultSet = connection.createStatement().executeQuery(" SELECT * from person");
+        while (resultSet.next()) {
+            Integer age = resultSet.getInt("age");
+            String name = resultSet.getString("name");
+            String surName = resultSet.getString("surName");
+            String city = resultSet.getString("city");
+            String country = resultSet.getString("country");
+            String street=resultSet.getString("street");
+            readPerson = new Person(null, age, name, surName);
+            readAddress=new Address(city,country,street);
+
+        }
+        resultSet.close();
+
+        resultSet = connection.createStatement().executeQuery("Select count(*) from Person");
+        resultSet.next();
+        count = resultSet.getInt(1);
+        resultSet.close();
+
+        assertNotNull(savedId);
+        assertEquals(count, 1);
+        assertNotNull(readPerson);
+        assertEquals(23, (long) readPerson.getAge());
+        assertEquals("John", readPerson.getName());
+        assertEquals("testSavePerson", readPerson.getSurname());
+        assertEquals("Minsk",readAddress.getCity());
+        assertEquals("Belarus", readAddress.getCountry());
+        assertEquals("testSavePersonWithAddress",readAddress.getStreet());
     }
 }

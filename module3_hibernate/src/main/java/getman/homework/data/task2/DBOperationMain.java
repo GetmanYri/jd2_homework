@@ -93,11 +93,12 @@ public class DBOperationMain {
     private static String find() {
         Person person;
         String id = readId();
-        person = personDao.getPersonWithBankAccountById(id);
+        person = personDao.getPersonById(id);
 
         if (person == null) {
             return "Person with id " + id + " not found";
         }
+        person=personDao.refreshPerson(person);
         return person.toString();
     }
 

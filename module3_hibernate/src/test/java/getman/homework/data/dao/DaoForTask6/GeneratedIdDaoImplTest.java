@@ -1,7 +1,5 @@
 package getman.homework.data.dao.DaoForTask6;
 
-import getman.homework.data.dao.DaoForTask2_3.PersonDao;
-import getman.homework.data.dao.DaoForTask2_3.PersonDaoImp;
 import getman.homework.data.pojo.forTask6.*;
 import getman.homework.data.util.DataTestSource;
 import getman.homework.data.util.HibernateTestSessionFactory;
@@ -14,21 +12,21 @@ import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
 
-public class GeneratedIdDaoTest {
+public class GeneratedIdDaoImplTest {
     GeneratedIdDao generatedIdDao;
     Connection conn;
 
     @Before
     public void setUp() throws Exception {
-        generatedIdDao = new GeneratedIdDao(HibernateTestSessionFactory.getSessionFactory());
+        generatedIdDao = new GeneratedIdDaoImpl(HibernateTestSessionFactory.getSessionFactory());
         conn = DataTestSource.getConnection();
         conn.createStatement().executeUpdate("TRUNCATE TABLE ID_UUID;");
         conn.createStatement().executeUpdate("TRUNCATE TABLE ID_HILO;");
         conn.createStatement().executeUpdate("TRUNCATE TABLE ID_GUID;");
         conn.createStatement().executeUpdate("TRUNCATE TABLE ID_SEQUENCE;");
+        conn.createStatement().executeUpdate("TRUNCATE TABLE hibernate_sequence;");
         conn.createStatement().executeUpdate("TRUNCATE TABLE ID_IDENTITY;");
         conn.createStatement().executeUpdate("TRUNCATE TABLE hilo_sequence_generator;");
-        conn.createStatement().executeUpdate("INSERT INTO hilo_sequence_generator values(2);");
 
     }
 
@@ -69,6 +67,7 @@ public class GeneratedIdDaoTest {
 
     @Test
     public void saveAndGetHiLo() throws Exception {
+        conn.createStatement().executeUpdate("INSERT INTO hilo_sequence_generator values(2);");
         IdHiLo idHiLo = new IdHiLo("saveAndGetHiLo");
         IdHiLo idHiLo2 = new IdHiLo("saveAndGetHiLo2");
         long idFirstSaveHibernate;
@@ -128,6 +127,7 @@ public class GeneratedIdDaoTest {
 
     @Test
     public void saveAndGetIdSequence() throws Exception {
+        conn.createStatement().executeUpdate("INSERT INTO hibernate_sequence values(2);");
         IdSequence idSequence1 = new IdSequence("saveAndGetIdSequence1");
         IdSequence idSequence2 = new IdSequence("saveAndGetIdSequence2");
         long idFirstSaveHibernate;
@@ -146,8 +146,8 @@ public class GeneratedIdDaoTest {
         idSecondSaveJDBC = resultSet.getLong(1);
         resultSet.close();
 
-        assertEquals(idFirstSaveJDBC, 1);
-        assertEquals(idSecondSaveJDBC, 2);
+        assertEquals(idFirstSaveJDBC, 2);
+        assertEquals(idSecondSaveJDBC, 3);
         assertEquals(idFirstSaveHibernate, idFirstSaveJDBC);
         assertEquals(idSecondSaveHibernate, idSecondSaveJDBC);
 

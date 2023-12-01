@@ -11,12 +11,22 @@
 
         <mapping class="getman.homework.data.pojo.forTask2_3.Person"/>
         <mapping class="getman.homework.data.pojo.forTask2_3.BankAccount"/>
+
         <mapping class="getman.homework.data.pojo.forTask6.IdNative"/>
         <mapping class="getman.homework.data.pojo.forTask6.IdIdentity"/>
         <mapping class="getman.homework.data.pojo.forTask6.IdSequence"/>
         <mapping class="getman.homework.data.pojo.forTask6.IdHiLo"/>
         <mapping class="getman.homework.data.pojo.forTask6.IdUuid"/>
         <mapping class="getman.homework.data.pojo.forTask6.IdGUID"/>
+
+        <mapping class="getman.homework.data.pojo.forTask8.singleTable.ClientSingleTable"/>
+        <mapping class="getman.homework.data.pojo.forTask8.singleTable.BankAccountMasterSingleTable"/>
+        <mapping class="getman.homework.data.pojo.forTask8.singleTable.BankAccountVisaSingleTable"/>
+
+        <mapping class="getman.homework.data.pojo.forTask8.perSubclass.Employee"/>
+        <mapping class="getman.homework.data.pojo.forTask8.perSubclass.Engineer"/>
+        <mapping class="getman.homework.data.pojo.forTask8.perSubclass.Manager"/>
+
 
 
     </session-factory>

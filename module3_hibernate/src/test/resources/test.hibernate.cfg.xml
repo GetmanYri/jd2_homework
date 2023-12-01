@@ -18,6 +18,12 @@
         <mapping class="getman.homework.data.pojo.forTask6.IdUuid"/>
         <mapping class="getman.homework.data.pojo.forTask6.IdGUID"/>
 
+        <mapping class="getman.homework.data.pojo.forTask8.singleTable.ClientSingleTable"/>
+        <mapping class="getman.homework.data.pojo.forTask8.singleTable.BankAccountMasterSingleTable"/>
+        <mapping class="getman.homework.data.pojo.forTask8.singleTable.BankAccountVisaSingleTable"/>
 
+        <mapping class="getman.homework.data.pojo.forTask8.perSubclass.Employee"/>
+        <mapping class="getman.homework.data.pojo.forTask8.perSubclass.Engineer"/>
+        <mapping class="getman.homework.data.pojo.forTask8.perSubclass.Manager"/>
     </session-factory>
 </hibernate-configuration>

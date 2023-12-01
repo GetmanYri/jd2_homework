@@ -1,6 +1,7 @@
 package getman.homework.data.pojo.forTask7;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 
 // The test for task 7 is completed in:
@@ -9,7 +10,7 @@ import javax.persistence.Embeddable;
 
 
 @Embeddable
-public class Address {
+public class Address implements Serializable {
     private String city;
     private String country;
     private String street;

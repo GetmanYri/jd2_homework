@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-init-method="init" default-destroy-method="destroy">
+    <bean id="dollarBean"
+          class="getman.homework.task2.Dollar">
+    </bean>
+
+    <bean id="euroBean"
+          class="getman.homework.task2.Euro">
+    </bean>
+    <bean id="rubleBean"
+          class="getman.homework.task2.Ruble">
+    </bean>
+
+    <bean id="bankomat"
+          class="getman.homework.task2.Bankomat"
+          factory-method="getBankomat"
+    scope="singleton">
+         <!-- init-method="init"
+          destroy-method="destroy">-->
+        <!-- <constructor-arg ref="rubleBean"/>-->
+        <property name="currency" ref="euroBean"/>
+    </bean>
+
+
+</beans>

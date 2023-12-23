@@ -13,6 +13,7 @@
         <module>mod2_topic3</module>
         <module>mod2_topic1_data</module>
         <module>module3_hibernate</module>
+        <module>homework5_spring</module>
     </modules>
 
     <properties>

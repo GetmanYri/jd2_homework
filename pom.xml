@@ -14,6 +14,7 @@
         <module>mod2_topic1_data</module>
         <module>module3_hibernate</module>
         <module>homework5_spring</module>
+        <module>homework7Spring-Hibernate</module>
     </modules>
 
     <properties>

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-public class PersonDaoImpTest {
+public class  PersonDaoImpTest {
     PersonDao personDao;
     Connection connection;
 

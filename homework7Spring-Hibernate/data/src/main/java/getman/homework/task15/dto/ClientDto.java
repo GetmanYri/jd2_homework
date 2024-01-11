@@ -8,6 +8,9 @@ public class ClientDto implements Serializable {
     private String name;
     private String surname;
 
+    private UserDto userDto;
+
+
     public ClientDto(String id, String name, String surname) {
         this.id = id;
         this.name = name;
@@ -38,5 +41,12 @@ public class ClientDto implements Serializable {
         this.surname = surname;
     }
 
+    public UserDto getUserDto() {
+        return userDto;
+    }
 
+    public ClientDto setUserDto(UserDto userDto) {
+        this.userDto = userDto;
+        return this;
+    }
 }

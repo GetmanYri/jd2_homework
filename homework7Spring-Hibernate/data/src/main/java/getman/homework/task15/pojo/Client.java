@@ -18,6 +18,9 @@ public class Client {
     private String name;
     @Column(name = "SURNAME")
     private String surname;
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
     @Override
     public String toString() {
@@ -64,4 +67,11 @@ public class Client {
         this.surname = surname;
     }
 
-   }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+}

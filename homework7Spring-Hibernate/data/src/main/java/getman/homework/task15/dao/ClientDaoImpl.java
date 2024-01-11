@@ -1,7 +1,9 @@
 package getman.homework.task15.dao;
 
 import getman.homework.task15.dto.ClientDto;
+import getman.homework.task15.dto.UserDto;
 import getman.homework.task15.pojo.Client;
+import getman.homework.task15.pojo.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -23,7 +25,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public String createClient(ClientDto clientDto) {
+    public String createClient(ClientDto clientDto, UserDto userDto) {
         String id;
         final Session session = sessionFactory.getCurrentSession();
 
@@ -32,6 +34,12 @@ public class ClientDaoImpl implements ClientDao {
                 clientDto.getName(),
                 clientDto.getSurname()
         );
+        User user = new User(
+                userDto.getId(),
+                userDto.getLogin(),
+                userDto.getPassword()
+        );
+        client.setUser(user);
         id = (String) session.save(client);
         return id;
     }
@@ -41,7 +49,7 @@ public class ClientDaoImpl implements ClientDao {
     public ClientDto getClientById(String id) {
         final Session session = sessionFactory.getCurrentSession();
         Client client = session.get(Client.class, id);
-
+        User user = client.getUser();
         return new ClientDto(
                 client.getId(),
                 client.getName(),
@@ -54,6 +62,7 @@ public class ClientDaoImpl implements ClientDao {
         final Session session = sessionFactory.getCurrentSession();
 
 
+        //String hql = "SELECT c.id,c.name,c.surname FROM Client c";
         String hql = "FROM Client";
         Query<Client> query = session.createQuery(hql, Client.class);
 
@@ -62,11 +71,26 @@ public class ClientDaoImpl implements ClientDao {
                 .map(client -> new ClientDto(
                         client.getId(),
                         client.getName(),
-                        client.getSurname()))
+                        client.getSurname())
+                        .setUserDto(new UserDto(
+                                client.getUser().getId(),
+                                client.getUser().getLogin(),
+                                client.getUser().getPassword())))
                 .collect(Collectors.toList());
 
 
         return list;
+    }
+
+    public void updateClient(ClientDto clientDto) {
+        final Session session = sessionFactory.getCurrentSession();
+
+                session.merge(new Client(
+                        clientDto.getId(),
+                        clientDto.getName(),
+                        clientDto.getSurname()
+                )
+        );
     }
 
 

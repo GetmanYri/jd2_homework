@@ -14,6 +14,9 @@ public class Client implements Serializable {
         this.surname = surname;
     }
 
+    public Client() {
+    }
+
     public String getId() {
         return id;
     }
@@ -36,5 +39,14 @@ public class Client implements Serializable {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
     }
 }

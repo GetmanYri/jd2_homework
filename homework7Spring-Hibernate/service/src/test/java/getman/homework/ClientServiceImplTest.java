@@ -1,5 +1,9 @@
 package getman.homework;
 
+import getman.homework.model.Client;
+import getman.homework.model.User;
+import getman.homework.task15.dto.ClientDto;
+import getman.homework.task15.dto.UserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +22,14 @@ public class ClientServiceImplTest {
     @Test
 
     public void updateClient() {
-        String name = "Alex";
+       String id="111";
         assertNotNull(clientService);
 
-        String readId = clientService.idByName(name);
+        Client client = clientService.getClient(id);
 
-        assertEquals(readId, "222");
+        assertEquals(client.getId(), "111");
+        assertEquals(client.getName(), "Max");
+        assertEquals(client.getSurname(), "Mock1");
 
     }
 

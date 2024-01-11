@@ -2,6 +2,7 @@ package getman.homework.task15;
 
 
 import getman.homework.task15.pojo.Client;
+import getman.homework.task15.pojo.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -69,7 +70,8 @@ public class DataConfiguration {
         sessionFactory.setHibernateProperties(hibernateProperties);
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setAnnotatedClasses(
-                Client.class
+                Client.class,
+                User.class
         );
         return sessionFactory;
     }

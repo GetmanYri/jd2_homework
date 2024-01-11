@@ -1,8 +1,10 @@
 package getman.homework;
 
 import getman.homework.model.Client;
+import getman.homework.model.User;
 import getman.homework.task15.dao.ClientDao;
 import getman.homework.task15.dto.ClientDto;
+import getman.homework.task15.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,29 +29,35 @@ public class ClientServiceImpl implements ClientService {
         );
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    @Override
-    public String idByName(String name) {
+    @Transactional(propagation = Propagation.REQUIRED)
+   // @Override
+    public void updateClient(Client client, User user) {
 
         List<ClientDto> clients = clientDao.getClients()
                 .stream()
-                .filter(clientDto -> clientDto.getName().equals(name))
+                .filter(clientDto -> clientDto.getUserDto().getLogin().equalsIgnoreCase(user.getLogin()))
                 .toList();
 
-        if (clients.size() == 0) {
-            return null;
-        }
-        return clients.get(0).getId();
+        clients.get(0).setSurname(client.getSurname());
 
+        clientDao.updateClient(clients.get(0));
     }
 
+
     @Transactional(propagation = Propagation.SUPPORTS)
-    public void saveNewClient(Client client) {
-        clientDao.createClient(new ClientDto(
+    public void saveNewClient(Client client, User user) {
+        ClientDto clientDto = new ClientDto(
                 client.getId(),
                 client.getName(),
                 client.getSurname()
-        ));
+        );
+        UserDto userDto=new UserDto(
+                user.getId(),
+                user.getLogin(),
+                user.getPassword()
+        );
+
+        clientDao.createClient(clientDto, userDto);
     }
 }
 

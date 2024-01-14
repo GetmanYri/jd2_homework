@@ -8,6 +8,7 @@ public class ClientDto implements Serializable {
     private String name;
     private String surname;
 
+
     private UserDto userDto;
 
 
